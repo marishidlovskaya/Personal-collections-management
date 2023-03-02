@@ -1,0 +1,151 @@
+﻿@using Web_app_personal_collections.Data
+@using Web_app_personal_collections.ViewModels
+@using Microsoft.AspNetCore.Identity
+@using Web_app_personal_collections.Areas.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@model CollectionInfoModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Modal Error when user is not log in -->
+<div class="modal fade" id="myModalError" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">You should first log in</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal message was sent -->
+<div class="modal fade" id="myModalMessageSent" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Message was sent</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- particular collection page -->
+<div class="container ps-0" style="max-width: 1000px">
+    <div class="row mt-5">
+        <div class="col">
+            <h4 class="collection-page-name">@Model.CollectionName</h4>
+        </div>
+    </div>
+
+    <div class="row mt-1">
+        <span class="category-name text-muted">Category: @Model.CategoryName </span>
+    </div>
+
+    <div class="row mt-2">
+        <div class="d-flex mb-3 mt-2 ">
+
+            <div id="numLikes" class="me-2">@Model.numberOfLikes</div>
+            @if (!SignInManager.IsSignedIn(User))
+            {
+                <img src="/images/like_empty_.svg" height="20px" class="emptylike" />
+                <img src="/images/like_full.svg" height="20px" class="fulllike" hidden />
+            }
+            else
+            {
+                if (@Model.colIsLikedByCurrentUser == true)
+                {
+                    <img src="/images/like_empty_.svg" height="20px" class="emptylike" hidden />
+                    <img src="/images/like_full.svg" height="20px" class="fulllike" />
+                }
+                else
+                {
+                    <img src="/images/like_empty_.svg" height="20px" class="emptylike" />
+                    <img src="/images/like_full.svg" height="20px" class="fulllike" hidden />
+                }
+            }
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-5">
+            <img src="@Model.Image" class="img-particular-col" style="width: 100%;  object-fit: cover; ">
+        </div>
+
+        <div class="col-7 text-description">
+
+            <div class="description">
+                @Model.CollectionDescription
+            </div>
+
+        </div>
+    </div>
+
+    <!-- items part -->
+    <div class="row mt-5">
+        <table id="itemstable">
+            <thead>
+            </thead>
+        </table>
+    </div>
+
+
+    <div class="row mt-5 d-flex justify-content-flex-start">
+        <div class="col-md-8 col-lg-6" id="all-comments-table">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <div class="card shadow-0 border bg-light">
+                    <div class="card-body p-4">
+                        <div class="form-outline mb-4">
+                            <input type="text" id="addANote" class="form-control" placeholder="Add comment..." />
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-success" id="addCommentBtn">Publish</button>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="append-to-this">
+
+
+                @foreach (var comment in @Model.Comments)
+                {
+                    <div class="card shadow-0 border bg-light comment">
+                        <div class="card-body p-4">
+
+
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <p class="comment-text-style">@comment.Text</p>
+
+                                    <div class=" mt-2 d-flex justify-content-between">
+                                        <div class="d-flex flex-row align-items-center">
+                                            <p class="small mb-0 ms-0">@comment.UserName</p>
+                                        </div>
+                                        <div class="d-flex flex-row align-items-center">
+                                            <p class="small text-muted mb-0">@comment.DateTimeOfComment</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+

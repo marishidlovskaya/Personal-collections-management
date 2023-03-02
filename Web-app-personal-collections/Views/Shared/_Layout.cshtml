@@ -1,0 +1,118 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Web_app_personal_collections.Data
+@inject SignInManager<IdentityUser> SignInManager
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>@ViewData["Title"] - Web_app_personal_collections</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Montserrat:wght@300;600&family=Poppins:wght@200;300&display=swap" rel="stylesheet">
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js" defer></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/search.js" asp-append-version="true"></script>
+    <script src="~/js/collection.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script src="~/js/fileuploader.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-sm navbar-light d-flex">
+            <div class="container">
+                <a class="navbar-brand m-0" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="/images/logo.svg" class="logo-image-top" />
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        @{
+                            var context = SignInManager.Context;
+                            var currentUser = context.User;
+                            if (currentUser.IsInRole("Administrator"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin panel</a>
+                                </li>
+                            }
+                        }
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item collection-link">
+                                <button type="button" class="btn-mycollections nav-link btn btn-link text-dark">My Collections</button>
+                            </li>
+                        }
+                        <partial name="_LoginPartial" />
+                    </ul>
+                </div>
+
+            </div>
+        </nav>
+
+    </div>
+    <div class="container">
+        <div class="container">
+           
+        <div class="navbar navbar-light d-block d-sm-flex flex-nowrap">
+            <div class="navbar-nav logo-image-below-div">
+                <div>
+                    <a asp-area="" asp-controller="Home" asp-action="Index"> 
+                        <img src="/images/logo.svg" class="logo-image-below" />
+                     </a>
+                    
+                </div>
+            </div>
+            <div class="navbar-nav flex-grow-1 search-input">
+                <div>
+                    <input id="searchblock" class="form-control bg-light" type="search" placeholder="Search" aria-label="Search">
+                </div>
+            </div>
+            <div class="navbar-nav my-collection-div">
+                <div>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <button type="button" class="btn btn-primary btn-mycollections">My Collections</button>
+                    }
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+            <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <input class="form-control bg-light" type="text" id="searchmodalblock" placeholder="Search..">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table id="resulttable" class="cell-border" style="width:100%">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

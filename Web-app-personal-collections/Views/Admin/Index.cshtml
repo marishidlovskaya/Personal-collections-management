@@ -1,0 +1,83 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<p class="groove mt-5 me-3"></p>
+<table id="userstable" class="mt-5 cell-border" style="max-width: 1000px">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>User name</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th></th>
+
+        </tr>
+    </thead>
+</table>
+
+<!-- Modal Edit -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input id="useridhash" name="useridhash" type="hidden" value="" />
+                <div class="container">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="mb-0 pb-3"><span class="align-middle">email</span></div>
+                            <div class="mb-0 pb-3"><span class="align-middle">role</span></div>
+                            <div class="mb-0"><span class="align-middle">status</span></div>
+                        </div>
+                        <div class="col-8">
+                            <div class="pb-3">
+                                <span id="useremail"></span>
+                            </div>
+                            <div class="pb-3">
+                                <select id="roles" class="btn-sm dropdown-toggle" aria-label="Default select example" asp-items="@ViewBag.roles" style="width: 130px"></select>
+                            </div>
+                            <div>
+                                <select id="statuses" class="btn-sm dropdown-toggle" aria-label="Default select example" style="width: 130px">
+                                    <option>Active</option>
+                                    <option>Blocked</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="saveuser" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Delete -->
+<div class="modal" id="myModalDelete">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal footer -->
+            <div class="modal-body d-block me-0 ms-0 m-3">
+                <input id="useridfordeletion" name="useridfordeletion" type="hidden" value="" />
+                <div class="d-flex justify-content-center mb-3">Are you sure?</div>
+                <div class="d-flex justify-content-center">
+                    <div>
+                        <button type="button" id="confirmdeletion" class="btn btn-secondary me-2" data-bs-dismiss="modal" style="width: 90px">Confirm</button>
+                        <button type="button" class="btn btn-danger ms-2" data-bs-dismiss="modal" style="width: 90px">Close</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="~/js/admin.js"></script>
